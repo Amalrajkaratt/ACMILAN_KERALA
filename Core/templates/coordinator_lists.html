@@ -1,0 +1,154 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <body class="py-5">
+        {% include 'header.html' %}
+        <!-- BEGIN: Content -->
+        <br>
+        <br>
+        <br>
+    <div class="content">
+
+    <h2 class="intro-y text-lg font-medium mt-10" style="text-align: center;font-size: 35px;color:red;padding-top: 30px;padding-bottom: 30px;border-bottom: solid 1px #bcbcbc;">Coordinatores</h2>
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="intro-y col-span-12 flex flex-wrap xl:flex-nowrap items-center mt-2">
+            
+            <div class="hidden xl:block mx-auto text-slate-500"></div>
+            <div class="w-full xl:w-auto flex items-center mt-3 xl:mt-0">
+                <!-- <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2"> <i data-lucide="printer" class="w-4 h-4 mr-2"></i> Print </button>
+                <button class="btn btn-outline-secondary shadow-md mr-2">
+                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export to Excel
+                </button> -->
+                <a href="{% url 'add_coordinator' %}"><button class="btn btn-primary shadow-md mr-2">Add New coordinetor</button></a>
+                
+                    <div class="dropdown-menu w-40">
+                        <!-- <ul class="dropdown-content">
+                            <li>
+                                <a href="category-add.php" class="dropdown-item"> <i data-lucide="file-plus" class="w-4 h-4 mr-2"></i> New Category </a>
+                            </li>
+                            <li>
+                                <a href="product-add.php" class="dropdown-item"> <i data-lucide="users" class="w-4 h-4 mr-2"></i> New Product </a>
+                            </li>
+                        </ul> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- BEGIN: Data List -->
+        <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
+            <table class="table table-report -mt-2">
+                <thead>
+                    <tr>
+                        <!-- <th class="whitespace-nowrap">
+                            <input class="form-check-input" type="checkbox">
+                        </th> -->
+                        <th class="whitespace-nowrap text-center">NO</th>
+                        <th class="whitespace-nowrap text-center">Name</th>
+                        <th class="whitespace-nowrap text-center">Mobile Number 1</th>
+                        <th class="whitespace-nowrap text-center">Mobile Number 2</th>
+                        <th class="whitespace-nowrap text-center">Place</th>
+                        <!-- <th class="whitespace-nowrap text-center">ADDRESS</th> -->
+                        <th class="whitespace-nowrap text-center">Center1</th>
+                        <th class="whitespace-nowrap text-center">Center2</th>
+                        <th class="whitespace-nowrap text-center">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for coordinator in coordinators %}
+                        <tr class="intro-x">
+                            <td class="text-center">
+                                <a href="" class=" whitespace-nowrap">{{forloop.counter}}</a>
+                            </td>
+                            <td class="text-center">
+                                <div>{{ coordinator.user.first_name }} {{ coordinator.user.last_name }}</div> 
+                            </td>
+                            <td class=" text-center">
+                                <div>{{ coordinator.primary_mobile }}</div>
+                            </td>
+                            <td class=" text-center">
+                                <div>{{ coordinator.secondary_mobile }}</div>
+                            </td>
+
+                            <td class=" text-center">
+                                <div>{{coordinator.place}}</div>
+                            </td>
+
+                            <td class="text-primary text-center">
+                                <div>{{ coordinator.center1_name }}</div>
+                            </td>
+
+                            <td class="text-primary text-center">
+                                <div>{{ coordinator.center2_name }}</div>
+                            </td>
+                            
+                            <td class="table-report__action text-center">
+                                <div class="flex justify-center items-center">
+                                
+                                    <a href="{% url 'edit_coordinator' coordinator.id %}">Edit </a>
+
+
+                                    <a class="delete-coordinator-btn" data-coordinator-id="{{ coordinator.id }}">Delete</a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- END: Data List -->
+        <!-- BEGIN: Pagination -->
+        <!-- END: Pagination -->
+    </div>
+    <!-- BEGIN: Delete Confirmation Modal -->
+    
+    <script>
+        function pop(id){
+            $('#id').val(id);
+        }
+    </script>
+    <script>
+        // Add an event listener to all delete coordinator buttons
+        document.querySelectorAll('.delete-coordinator-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const coordinatorId = e.target.dataset.coordinatorId;
+            if (!confirm(`Are you sure you want to delete coordinator ${coordinatorId}?`)) {
+            return;
+            }
+            fetch(`/delete-coordinator/${coordinatorId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'), // Include the CSRF token for security
+            },
+            })
+            .then(response => {
+                if (response.ok) {
+                // Remove the coordinator row from the table
+                const row = e.target.closest('tr');
+                row.parentNode.removeChild(row);
+                } else {
+                alert('Failed to delete coordinator.');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('An error occurred while deleting coordinator.');
+            });
+        });
+        });
+
+        // Helper function to get the value of a cookie
+        function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+    </script>
+    <!-- END: Delete Confirmation Modal -->
+    </div>
+    </body>
+{% endblock content %}

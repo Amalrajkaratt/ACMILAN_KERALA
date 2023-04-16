@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <body class="py-5">
+        {% include 'header.html' %}
+        <!-- BEGIN: Content -->
+    <div class="content">
+
+    <h2 class="intro-y text-lg font-medium mt-10" style="text-align: center;font-size: 35px;color:red;padding-top: 30px;padding-bottom: 30px;border-bottom: solid 1px #bcbcbc;">Students</h2>
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="intro-y col-span-12 flex flex-wrap xl:flex-nowrap items-center mt-2">
+            
+            <div class="hidden xl:block mx-auto text-slate-500"></div>
+            <div class="w-full xl:w-auto flex items-center mt-3 xl:mt-0">
+                <!-- <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2"> <i data-lucide="printer" class="w-4 h-4 mr-2"></i> Print </button>
+                <button class="btn btn-outline-secondary shadow-md mr-2">
+                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Export to Excel
+                </button> -->
+                <a style="display: flex;
+                flex-direction: row-reverse;
+                justify-content: flex-start;" href="{% url 'add_student' %}"><button style=" background: darkred;color: white;" class="btn btn-primary shadow-md mr-2">Add New Student</button></a>
+                <br>
+                    <div class="dropdown-menu w-40">
+                        <!-- <ul class="dropdown-content">
+                            <li>
+                                <a href="category-add.php" class="dropdown-item"> <i data-lucide="file-plus" class="w-4 h-4 mr-2"></i> New Category </a>
+                            </li>
+                            <li>
+                                <a href="product-add.php" class="dropdown-item"> <i data-lucide="users" class="w-4 h-4 mr-2"></i> New Product </a>
+                            </li>
+                        </ul> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- BEGIN: Data List -->
+        <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
+            <table class="table table-report -mt-2">
+                <thead>
+                    <tr>
+                        <!-- <th class="whitespace-nowrap">
+                            <input class="form-check-input" type="checkbox">
+                        </th> -->
+                        <th class="whitespace-nowrap text-center">SL. NO.</th>
+                        <th class="whitespace-nowrap text-center">REF. NO.</th>
+                        <th class="whitespace-nowrap text-center">STUDENT NAME</th>
+                        <th class="whitespace-nowrap text-center">AGE GROUP</th>
+                        <th class="whitespace-nowrap text-center">POSITION</th>
+                        <th class="whitespace-nowrap text-center">Center</th>
+                        <th class="whitespace-nowrap text-center">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr class="intro-x" >
+                            <td class="text-center">
+                                <a style="color: black;" href="" class=" whitespace-nowrap">{{ forloop.counter }}</a>
+                            </td>
+                            <td class="text-center">
+                                <div>{{ student.ref_number }}</div> 
+                            </td>
+                            <td class="text-primary text-center">
+                                <div style="color: black;">{{ student.full_name }} </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="whitespace-nowrap">{{ student.age_group }}</div>
+                            </td>
+                            <td class="text-center">
+                                <div class="whitespace-nowrap">{{ student.football_playing_position }}</div>
+                            </td>
+                            <td class="text-center">
+                                <div class="whitespace-nowrap">{{ student.center }}</div>
+                            </td>
+                            <td class="table-report__action text-center">
+                                <div class="flex justify-center items-center">
+                                    <a href="#" style="margin-left: 15px;"><i style="font-size: 20px;color: red;" class='bx bx-show'></i></a>
+                                    <a style="margin-left: 15px;" href=""><i style="font-size: 20px;color: red;" class='bx bxs-edit-alt'></i> </a>
+                                    
+                                    <a style="margin-left: 15px;"  data-student-id="{{ student.id }}"><i style="font-size: 20px;color: red;" class="bx bxs-trash-alt"></i></a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- END: Data List -->
+        <!-- BEGIN: Pagination -->
+        <!-- END: Pagination -->
+    </div>
+    <!-- BEGIN: Delete Confirmation Modal -->
+   
+    <script>
+        function pop(id){
+            $('#id').val(id);
+        }
+    </script>
+    <script>
+        // Add an event listener to all delete student buttons
+        document.querySelectorAll('.delete-student-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const studentId = e.target.dataset.studentId;
+            if (!confirm(`Are you sure you want to delete student ${studentId}?`)) {
+            return;
+            }
+            fetch(`/delete-student/${studentId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'), // Include the CSRF token for security
+            },
+            })
+            .then(response => {
+                if (response.ok) {
+                // Remove the student row from the table
+                const row = e.target.closest('tr');
+                row.parentNode.removeChild(row);
+                } else {
+                alert('Failed to delete student.');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('An error occurred while deleting student.');
+            });
+        });
+        });
+
+        // Helper function to get the value of a cookie
+        function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+    </script>
+    </body>
+{% endblock content %}

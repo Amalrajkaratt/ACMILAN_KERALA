@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+         @media(max-width: 575px)
+            {
+                .intro-y .box {
+                    width: 100%!important;
+                }
+            }
+    </style>
+    <body class="py-5">
+        {% include 'header.html' %}
+        <!-- BEGIN: Content -->
+
+    <div class="content">
+            <div class="flex items-center mt-8">
+        <!-- <h2 class="intro-y text-lg font-medium mr-auto">Add / Manage Category</h2> -->
+    </div>
+    <!-- BEGIN: Wizard Layout -->
+    <div class="intro-y box py-10 sm:py-20 mt-5">
+        <h2 style=" font-size: 30px; font-weight: 500; text-align: center;
+        color:red;">Update Student Details</h2>
+
+          <br>
+          {% if message %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+          {% endif %}
+          <br>
+
+
+
+        <div class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="ref_number">Ref Number:</label>
+                <input type="text" id="ref_number" name="ref_number" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="full_name">Full Name:</label>
+              <input type="text" id="full_name" name="full_name" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="city">City:</label>
+              <input type="text" id="city" name="city" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="zipcode">Zipcode:</label>
+              <input type="text" id="zipcode" name="zipcode" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="date_of_birth">Date of Birth:</label>
+              <input type="date" id="date_of_birth" name="date_of_birth" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="preferred_location">Preferred Location:</label>
+              <input type="text" id="preferred_location" name="preferred_location" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="street_address">Street Address:</label>
+              <input type="text" id="street_address" name="street_address" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="state">State:</label>
+              <input type="text" id="state" name="state" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="phone_number">Phone Number:</label>
+              <input type="tel" id="phone_number" name="phone_number" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="guardian_name">Guardian Name:</label>
+              <input type="text" id="guardian_name" name="guardian_name" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="guardian_phone_number">Guardian Phone Number:</label>
+              <input type="tel" id="guardian_phone_number" name="guardian_phone_number" required class="form-control">
+              </div>
+              <br>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="id_proof">ID Proof:</label>
+              <input type="file" id="id_proof" name="id_proof" required>
+              </div>
+              <br>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="input-wizard-2" class="form-label">Age Group</label>
+                <select name="age_group" id="" class="form-control" required>
+                    <option value="">select age group</option>
+                    <option value="4-13">4-13</option>
+                    <option value="14-17">14-17</option>
+                </select>
+                </div>
+                <br>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="mode_of_travel">Mode of Travel:</label>
+              <input type="text" id="mode_of_travel" name="mode_of_travel" required class="form-control">
+              </div>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+              <label for="football_playing_position">Football Playing Position:</label>
+              <input type="text" id="football_playing_position" name="football_playing_position" required class="form-control">
+              </div>
+              <br>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="center">Center:</label>
+                <select id="center" name="center">
+                  {% for center in centers %}
+                    <option value="{{ center.id }}" required class="form-control">{{ center.name }}</option>
+                  {% endfor %}
+                </select>
+                </div>
+
+              <br>
+              <h2 style=" font-size: 30px; font-weight: 500; text-align: center;
+              color:black;">School Details</h2>
+
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="school_Name">School Name</label>
+                <input type="text" id="school_Name" name="school_Name" required class="form-control">
+                </div>
+
+                <div class="intro-y col-span-12 sm:col-span-6">
+                  <label for="school_Address">School Address</label>
+                  <input type="text" id="school_Address" name="school_Address" required class="form-control">
+                  </div>
+
+                  <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="study_Standard">Wich Standard</label>
+                    <input type="number" id="study_Standard" name="study_Standard" required class="form-control">
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                      <label for="study_Devision">Division</label>
+                      <input type="text" id="study_Devision" name="study_Devision" required class="form-control">
+                      </div>
+        
+
+
+              <br>
+
+              
+
+              <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
+                <!-- <button class="btn btn-secondary w-24">Add</button> -->
+                <button class="btn btn-primary w-24 ml-2" type="submit">Add Student</button>
+            </div>
+
+            </div>
+          </form>
+    </div>
+    </div>
+
+    <style>
+      .dark-mode-switcher{
+          display: none;
+      } 
+       .sm\:py-20 {
+          padding-top: 5rem;
+          padding-bottom: 1rem;
+      }
+      .content {
+          min-height: 75vh;
+         
+      }
+  </style>
+      <!-- BEGIN: Dark Mode Switcher-->
+      <div data-url="top-menu-dark-regular-form.html" class="dark-mode-switcher cursor-pointer shadow-md fixed bottom-0 right-0 box border rounded-full w-40 h-12 flex items-center justify-center z-50 mb-10 mr-10">
+          <div class="mr-4 text-slate-600 dark:text-slate-200">Dark Mode</div>
+          <div class="dark-mode-switcher__toggle border"></div>
+      </div>
+      <!-- END: Dark Mode Switcher-->
+  </body>
+    
+
+  {% endblock content %}
+
+
